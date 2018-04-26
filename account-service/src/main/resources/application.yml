@@ -1,0 +1,9 @@
+server:
+  port: 2222
+  
+spring:
+  application:
+    name: account-service
+  data:
+    mongodb:
+      uri: mongodb://192.168.99.100/test
