@@ -8,6 +8,9 @@
 
 	<modules>
 		<module>account-service</module>
+		<module>discovery-service</module>
+		<module>gateway-service</module>
+		<module>customer-service</module>
 	</modules>
 
 </project>

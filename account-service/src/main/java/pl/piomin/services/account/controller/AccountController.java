@@ -1,8 +1,8 @@
 package pl.piomin.services.account.controller;
 
-import java.util.logging.Logger;
 
-import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,46 +18,33 @@ import reactor.core.publisher.Mono;
 @RestController
 public class AccountController {
 
-	private static final Logger LOGGER = Logger.getLogger(AccountController.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 	
 	@Autowired
 	private AccountRepository repository;
 
-	@GetMapping(value = "/account/customer/{customer}")
+	@GetMapping("/customer/{customer}")
 	public Flux<Account> findByCustomer(@PathVariable("customer") String customerId) {
-		LOGGER.info("findByCustomer: " + customerId);
-//		return repository.findByCustomerId(customerId)
-//				.map(a -> new Account(a.getId(), a.getCustomerId(), a.getNumber(), a.getAmount()));
-//		return Flux.just(new Account("123", "1", 500));
+		LOGGER.info("findByCustomer: customerId={}", customerId);
 		return repository.findByCustomerId(customerId);
 	}
 
-	@GetMapping(value = "/account")
+	@GetMapping
 	public Flux<Account> findAll() {
 		LOGGER.info("findAll");
-//		return repository.findAll().map(a -> new Account(a.getId(), a.getCustomerId(), a.getNumber(), a.getAmount()));
-//		return Flux.just(new Account("123", "1", 500));
 		return repository.findAll();
 	}
 
-	@GetMapping(value = "/account/{id}")
+	@GetMapping("/{id}")
 	public Mono<Account> findById(@PathVariable("id") String id) {
-		LOGGER.info("findById: " + id);
-//		return repository.findById(id)
-//				.map(a -> new Account(a.getId(), a.getCustomerId(), a.getNumber(), a.getAmount()));
-//		return Mono.just(new Account("123", "1", 500));
+		LOGGER.info("findById: id={}", id);
 		return repository.findById(id);
 	}
 
-	@PostMapping(value = "/account")
-	public Flux<Account> create(@RequestBody Publisher<Account> accountStream) {
-//		return repository
-//				.save(Mono.from(accountStream)
-//						.map(a -> new pl.piomin.services.account.model.Account(a.getNumber(), a.getCustomerId(),
-//								a.getAmount())))
-//				.map(a -> new Account(a.getId(), a.getCustomerId(), a.getNumber(), a.getAmount()));
-//		return Mono.just(new Account("123", "1", 500));
-		return repository.saveAll(accountStream);
+	@PostMapping
+	public Mono<Account> create(@RequestBody Account account) {
+		LOGGER.info("create: {}", account);
+		return repository.save(account);
 	}
 	
 }
