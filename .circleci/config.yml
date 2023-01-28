@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: 'cimg/openjdk:8.0'
+    steps:
+      - checkout
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar
+
+executors:
+  j8:
+    docker:
+      - image: 'cimg/openjdk:8.0'
+
+orbs:
+  maven: circleci/maven@1.4.0
+
+workflows:
+  maven_test:
+    jobs:
+      - maven/test:
+          executor: j8
