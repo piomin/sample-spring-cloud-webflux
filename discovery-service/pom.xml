@@ -9,7 +9,11 @@
 	</parent>
 
 	<artifactId>discovery-service</artifactId>
-	
+
+	<properties>
+		<sonar.moduleKey>${artifactId}</sonar.moduleKey>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
