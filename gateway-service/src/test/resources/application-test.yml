@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            - account-service:
+                uri: account-service:8080
