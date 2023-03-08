@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   analyze:
     docker:
-      - image: 'cimg/openjdk:11.0'
+      - image: 'cimg/openjdk:17.0'
     steps:
       - checkout
       - run:
@@ -11,9 +11,9 @@ jobs:
           command: mvn verify sonar:sonar -DskipTests
 
 executors:
-  j11:
+  jdk:
     docker:
-      - image: 'cimg/openjdk:11.0'
+      - image: 'cimg/openjdk:17.0'
 
 orbs:
   maven: circleci/maven@1.4.1
@@ -23,7 +23,7 @@ workflows:
   maven_test:
     jobs:
       - maven/test:
-          executor: j11
+          executor: jdk
           context: Testcontainers
           pre-steps:
             - tcc/setup

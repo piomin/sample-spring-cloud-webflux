@@ -29,7 +29,7 @@ public class AccountController {
 		return repository.findByCustomerId(customerId);
 	}
 
-	@GetMapping
+	@GetMapping("/")
 	public Flux<Account> findAll() {
 		LOGGER.info("findAll");
 		return repository.findAll();
@@ -41,7 +41,7 @@ public class AccountController {
 		return repository.findById(id);
 	}
 
-	@PostMapping
+	@PostMapping("/")
 	public Mono<Account> create(@RequestBody Account account) {
 		LOGGER.info("create: {}", account);
 		return repository.save(account);

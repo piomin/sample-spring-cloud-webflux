@@ -6,4 +6,4 @@ spring:
     name: customer-service
   data:
     mongodb:
-      uri: mongodb://192.168.99.100/test
+      uri: mongodb://localhost:27017/test
