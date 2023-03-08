@@ -1,4 +1,4 @@
-package pl.piomin.services.account;
+package pl.piomin.service.customer;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -12,7 +12,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.piomin.services.account.model.Account;
+import pl.piomin.service.customer.model.Customer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
    properties = {"spring.cloud.discovery.enabled=false"})
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AccountControllerTests {
+public class CustomerControllerTests {
 
     static String id;
 
@@ -39,26 +39,26 @@ public class AccountControllerTests {
     @Test
     @Order(1)
     void add() {
-        Account account = new Account("123456", "1", 10000);
-        account = restTemplate.postForObject("/", account, Account.class);
-        assertNotNull(account);
-        assertNotNull(account.getId());
-        id = account.getId();
+        Customer customer = new Customer("Test1", "Test2", 10);
+        customer = restTemplate.postForObject("/", customer, Customer.class);
+        assertNotNull(customer);
+        assertNotNull(customer.getId());
+        id = customer.getId();
     }
 
     @Test
     @Order(2)
     void findById() {
-        Account account = restTemplate.getForObject("/{id}", Account.class, id);
-        assertNotNull(account);
-        assertNotNull(account.getId());
-        assertEquals(id, account.getId());
+        Customer customer = restTemplate.getForObject("/{id}", Customer.class, id);
+        assertNotNull(customer);
+        assertNotNull(customer.getId());
+        assertEquals(id, customer.getId());
     }
 
     @Test
     @Order(2)
     void findAll() {
-        Account[] accounts = restTemplate.getForObject("/", Account[].class);
-        assertTrue(accounts.length > 0);
+        Customer[] customers = restTemplate.getForObject("/", Customer[].class);
+        assertTrue(customers.length > 0);
     }
 }

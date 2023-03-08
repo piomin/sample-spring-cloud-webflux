@@ -33,7 +33,7 @@ public class CustomerController {
 		return repository.findById(id);
 	}
 
-	@GetMapping
+	@GetMapping("/")
 	public Flux<Customer> findAll() {
 		LOGGER.info("findAll");
 		return repository.findAll();
@@ -45,13 +45,13 @@ public class CustomerController {
 		Flux<Account> accounts = webClientBuilder.build().get().uri("http://account-service/customer/{customer}", id).retrieve().bodyToFlux(Account.class);		
 		return accounts
 				.collectList()
-				.map(a -> new Customer(a))
+				.map(Customer::new)
 				.mergeWith(repository.findById(id))
 				.collectList()
 				.map(CustomerMapper::map);
 	}
 
-	@PostMapping
+	@PostMapping("/")
 	public Mono<Customer> create(@RequestBody Customer customer) {
 		LOGGER.info("create: {}", customer);
 		return repository.save(customer);
