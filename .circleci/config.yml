@@ -37,6 +37,6 @@ executors:
 workflows:
   build-and-deploy:
     jobs:
-      - test:
+      - test
       - analyze:
           context: SonarCloud
