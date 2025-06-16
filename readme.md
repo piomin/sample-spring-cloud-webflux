@@ -18,7 +18,7 @@ This project demonstrates a reactive microservices architecture with the followi
 graph TB
   Client["Client Application"]
   Gateway["Gateway Service<br/>:8090"]
-  Discovery["Discovery Service<br/>Eureka Server<br/>:8761"]
+  Discovery["Discovery Service:8761"]
   Account["Account Service<br/>:2222"]
   Customer["Customer Service<br/>:3333"]
   MongoDB[(MongoDB<br/>:27017)]
