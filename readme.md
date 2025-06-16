@@ -25,13 +25,13 @@ graph TB
   
   Client --> Gateway
   Gateway --> Account
-  Gateway --&gt; Customer
-  Customer --&gt; Account
-  Account --&gt; Discovery
-  Customer --&gt; Discovery
-  Gateway --&gt; Discovery
-  Account --&gt; MongoDB
-  Customer --&gt; MongoDB
+  Gateway --> Customer
+  Customer --> Account
+  Account --> Discovery
+  Customer --> Discovery
+  Gateway --> Discovery
+  Account --> MongoDB
+  Customer --> MongoDB
   
   classDef serviceBox fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
   classDef dbBox fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
