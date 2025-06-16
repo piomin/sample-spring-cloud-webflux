@@ -23,8 +23,8 @@ graph TB
   Customer["Customer Service<br/>:3333"]
   MongoDB[(MongoDB<br/>:27017)]
   
-  Client --&gt; Gateway
-  Gateway --&gt; Account
+  Client --> Gateway
+  Gateway --> Account
   Gateway --&gt; Customer
   Customer --&gt; Account
   Account --&gt; Discovery
