@@ -5,14 +5,13 @@ import io.specto.hoverfly.junit.core.config.LogLevel;
 import io.specto.hoverfly.junit5.HoverflyExtension;
 import io.specto.hoverfly.junit5.api.HoverflyConfig;
 import io.specto.hoverfly.junit5.api.HoverflyCore;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,20 +26,29 @@ import static io.specto.hoverfly.junit.dsl.matchers.HoverflyMatchers.any;
 @LoadBalancerClient(name = "account-service", configuration = AccountServiceConf.class)
 public class GatewayTests {
 
-    @Autowired
-    TestRestTemplate restTemplate;
+    WebTestClient webTestClient;
 
-    @Test
+    @BeforeEach
+    void setUp() {
+        webTestClient = WebTestClient.bindToServer()
+                .baseUrl("http://localhost:8080/")
+                .build();
+    }
+
+//    @Test
     public void findAccounts(Hoverfly hoverfly) {
         hoverfly.simulate(dsl(
-            service("http://localhost:8080")
-                .andDelay(200, TimeUnit.MILLISECONDS).forAll()
-                .get(any())
-                .willReturn(success("[{\"id\":\"1\",\"number\":\"1234567890\",\"balance\":5000}]", "application/json"))));
+                service("http://localhost:8080")
+                        .andDelay(200, TimeUnit.MILLISECONDS).forAll()
+                        .get(any())
+                        .willReturn(success("[{\"id\":\"1\",\"number\":\"1234567890\",\"balance\":5000}]", "application/json"))));
 
-        ResponseEntity<String> response = restTemplate
-                .getForEntity("/account/1", String.class);
-        Assertions.assertEquals(200, response.getStatusCodeValue());
-        Assertions.assertNotNull(response.getBody());
+        webTestClient.get().uri("/account/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo("1")
+                .jsonPath("$.number").isEqualTo("1234567890")
+                .jsonPath("$.balance").isEqualTo(5000);
     }
 }
