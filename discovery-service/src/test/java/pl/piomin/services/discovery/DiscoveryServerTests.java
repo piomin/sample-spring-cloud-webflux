@@ -1,23 +1,26 @@
 package pl.piomin.services.discovery;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.web.servlet.client.RestTestClient;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class DiscoveryServerTests {
 
-    @Autowired
-    TestRestTemplate restTemplate;
+    RestTestClient restTestClient;
+
+    @BeforeEach
+    void setUp(WebApplicationContext context) {
+        restTestClient = RestTestClient.bindToApplicationContext(context).build();
+    }
 
     @Test
     public void findAccounts() {
-        ResponseEntity<String> response = restTemplate
-                .getForEntity("/", String.class);
-        assertEquals(200, response.getStatusCodeValue());
+        restTestClient.get().uri("/")
+                .exchange()
+                .expectStatus().isOk();
     }
 }
