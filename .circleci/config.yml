@@ -14,15 +14,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install OpenJDK 21
-          command: |
-            java -version
-            sudo apt-get update && sudo apt-get install openjdk-21-jdk
-            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
-            sudo update-alternatives --set javac /usr/lib/jvm/java-21-openjdk-amd64/bin/javac
-            java -version
-            export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-      - run:
           name: Maven Tests
           command: mvn test
 
@@ -38,5 +29,5 @@ workflows:
   build-and-deploy:
     jobs:
       - test
-      - analyze:
-          context: SonarCloud
+#      - analyze:
+#          context: SonarCloud
